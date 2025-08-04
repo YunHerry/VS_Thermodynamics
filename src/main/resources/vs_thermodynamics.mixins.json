@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "indi.yunherry.vs_thermodynamics.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "vs_thermodynamics.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

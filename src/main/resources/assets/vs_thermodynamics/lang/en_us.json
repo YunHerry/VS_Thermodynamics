@@ -1,0 +1,8 @@
+{
+  "create.gui.goggles.vs_thermodynamics.value": "当前的转速百分比",
+  "itemGroup.vs_thermodynamics_creative_tab": "VS:Thermodynamics",
+
+  "block.vs_thermodynamics.burner": "Burner",
+  "vs_thermodynamics.ponder.burner_usage.header": "Burner usage",
+  "vs_thermodynamics.ponder.burner_usage.text_1": "Burner usage"
+}

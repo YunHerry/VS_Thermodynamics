@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "vs_thermodynamics:block/burner/block",
+      "y": 90
+    },
+    "axis=z": {
+      "model": "vs_thermodynamics:block/burner/block"
+    }
+  }
+}

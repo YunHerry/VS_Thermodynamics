@@ -1,0 +1,192 @@
+Index: src/main/java/indi/yunherry/vs_thermodynamics/handler/ClientRenderHooks.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/indi/yunherry/vs_thermodynamics/handler/ClientRenderHooks.java b/src/main/java/indi/yunherry/vs_thermodynamics/handler/ClientRenderHooks.java
+--- a/src/main/java/indi/yunherry/vs_thermodynamics/handler/ClientRenderHooks.java	
++++ b/src/main/java/indi/yunherry/vs_thermodynamics/handler/ClientRenderHooks.java	(date 1751872403768)
+@@ -6,13 +6,24 @@
+ import net.minecraft.client.Camera;
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.renderer.GameRenderer;
++import net.minecraft.client.renderer.LevelRenderer;
++import net.minecraft.client.renderer.MultiBufferSource;
++import net.minecraft.client.renderer.RenderType;
++import net.minecraft.client.renderer.entity.EntityRenderer;
++import net.minecraft.client.renderer.entity.MobRenderer;
++import net.minecraft.core.BlockPos;
++import net.minecraft.core.Vec3i;
++import net.minecraft.util.Mth;
++import net.minecraft.world.level.Level;
+ import net.minecraft.world.phys.Vec3;
+ import net.minecraftforge.api.distmarker.Dist;
+ import net.minecraftforge.client.event.RenderLevelStageEvent;
+ import net.minecraftforge.eventbus.api.SubscribeEvent;
+ import net.minecraftforge.fml.common.Mod;
+ import org.apache.commons.lang3.tuple.Pair;
++import org.joml.Matrix4f;
+ import org.joml.Vector3d;
++import org.joml.Vector3f;
+ import org.valkyrienskies.core.api.ships.ClientShip;
+ import org.valkyrienskies.core.api.ships.Ship;
+ import org.valkyrienskies.core.apigame.ships.ClientShipCore;
+@@ -21,52 +32,121 @@
+ import org.valkyrienskies.mod.common.VSGameUtilsKt;
+ 
+ import java.util.ArrayList;
++import java.util.Map;
++import java.util.Optional;
+ 
+ @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+ public final class ClientRenderHooks {
+-    public static ArrayList<Pair<ConnectionPointData,ConnectionPointData>> ids= new ArrayList<>();
++    public static ArrayList<Pair<ConnectionPointData, ConnectionPointData>> ids = new ArrayList<>();
++
+     @SubscribeEvent
+     public static void onRenderLevel(RenderLevelStageEvent evt) {
+-        if (evt.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) return;
++        if (evt.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
++            return;
++        }
++
++        // --- 诊断步骤 1: 检查此事件是否执行以及`ids`列表是否有内容 ---
++        // 你可以在游戏中的控制台看到此消息。如果count为0, 说明问题出在添加数据到ids列表的逻辑上。
++        if (!ids.isEmpty()) {
++            System.out.println("VS_Thermodynamics: Rendering " + ids.size() + " ropes.");
++        }
+ 
+-        PoseStack ps = evt.getPoseStack();
+-        Camera cam = Minecraft.getInstance().gameRenderer.getMainCamera();
+-        Vec3 camPos = cam.getPosition();
+-        ps.pushPose();
+-        ps.translate(-camPos.x, -camPos.y, -camPos.z);
+-        BufferBuilder buf = Tesselator.getInstance().getBuilder();
+-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+-        buf.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+-        ClientShipWorldCore shipObjectWorld = VSGameUtilsKt.getShipObjectWorld(Minecraft.getInstance().level);
++        final Minecraft mc = Minecraft.getInstance();
++        final PoseStack poseStack = evt.getPoseStack();
++        final MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
++        final ClientShipWorldCore shipWorld = VSGameUtilsKt.getShipObjectWorld(mc.level);
++        final Vec3 camPos = mc.gameRenderer.getMainCamera().getPosition();
++
++        final VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.leash());
++
++        poseStack.pushPose();
++        poseStack.translate(-camPos.x, -camPos.y, -camPos.z);
+ 
+         ids.forEach(pair -> {
+-            ClientShip ship1 =pair.getLeft().id() != -1 ? shipObjectWorld.getLoadedShips().getById(pair.getLeft().id()) : null;
++            Vector3d posA = getWorldCoordinates(pair.getLeft(), shipWorld);
++            Vector3d posB = getWorldCoordinates(pair.getRight(), shipWorld);
++            System.out.println(posA.toString());
++            System.out.println(posB.toString());
++            if (posA == null || posB == null) return;
++
++            renderLeash(poseStack, vertexConsumer, posA, posB);
++        });
+ 
+-            ClientShip ship2 = pair.getRight().id() != -1 ? shipObjectWorld.getLoadedShips().getById(pair.getRight().id()):null;
+-            Vector3d a;
+-            if (ship1 != null) {
+-//               a = ship1.getShipToWorld().transformPosition(new Vector3d(pair.getLeft().pos())); // 从物理系统获取
+-                a = ship1.getRenderTransform().getShipToWorld().transformPosition(new Vector3d(pair.getLeft().pos()));
+-            } else {
+-               a = new Vector3d(pair.getLeft().pos());
+-            }
++        poseStack.popPose();
++    }
++
++    private static Vector3d getWorldCoordinates(ConnectionPointData pointData, ClientShipWorldCore shipWorld) {
++        if (pointData.id() != -1) {
++            final ClientShip ship = shipWorld.getLoadedShips().getById(pointData.id());
++            if (ship != null) {
++                return ship.getRenderTransform().getShipToWorld().transformPosition(new Vector3d(pointData.pos()));
++            }
++        } else {
++            return new Vector3d(pointData.pos());
++        }
++        return null;
++    }
+ 
+-            Vector3d b;
+-            if (ship2 != null) {
+-//                b = ship2.getShipToWorld().transformPosition(new Vector3d(pair.getRight().pos())); // 从物理系统获取
+-                b = ship2.getRenderTransform().getShipToWorld().transformPosition(new Vector3d(pair.getRight().pos()));
+-            } else {
+-                b = new Vector3d(pair.getRight().pos());
+-            }
+-            
+-            buf.vertex(ps.last().pose(), (float)a.x, (float)a.y, (float)a.z)
+-                    .color(0f, 1f, 0f, 1f).endVertex();
+-            buf.vertex(ps.last().pose(), (float)b.x, (float)b.y, (float)b.z)
+-                    .color(0f, 1f, 0f, 1f).endVertex();
++    /**
++     * 正确渲染缰绳的方法，生成一个带有垂感的三角带。
++     * @param poseStack PoseStack
++     * @param vertexConsumer 来自于 RenderType.leash() 的 VertexConsumer
++     * @param posA 世界坐标点A
++     * @param posB 世界坐标点B
++     */
++    public static void renderLeash(PoseStack poseStack, VertexConsumer vertexConsumer, Vector3d posA, Vector3d posB) {
++        final Matrix4f matrix = poseStack.last().pose();
++        final Minecraft mc = Minecraft.getInstance();
++
++        final float dx = (float) (posB.x - posA.x);
++        final float dy = (float) (posB.y - posA.y);
++        final float dz = (float) (posB.z - posA.z);
++        final float sag = Mth.sqrt(dx * dx + dy * dy + dz * dz) * 0.25f; // 垂感幅度
+ 
++        final int segments = 24; // 绳子分段数，越多越平滑
+ 
+-        });
+-        ps.popPose();
+-        Tesselator.getInstance().end();
++        for (int i = 0; i <= segments; ++i) {
++            float t = (float) i / (float) segments;
++
++            // 线性插值计算中心点
++            float x = (float) posA.x + dx * t;
++            float y = (float) posA.y + dy * t;
++            float z = (float) posA.z + dz * t;
++
++            // 增加垂感 (抛物线)
++            y += sag * Mth.sin(Mth.PI * t);
++
++            // 使用 LevelRenderer 获取打包的光照值
++            int light = LevelRenderer.getLightColor(mc.level, new BlockPos((int)x, (int)y, (int)z));
++
++            // 生成三角带的两个顶点
++            addLeashVertexPair(vertexConsumer, matrix, t, dx, dy, dz, x, y, z, light, segments);
++        }
+     }
+-}
++
++    private static void addLeashVertexPair(VertexConsumer vertexConsumer, Matrix4f matrix, float t, float dx, float dy, float dz, float x, float y, float z, int light, int segments) {
++        final float thickness = 0.025F; // 绳子粗细
++
++        // 计算当前点的法线方向，用于偏移出绳子的厚度
++        // 这里简化为只在XY平面上计算，避免在垂直观察时出现问题
++        float f9 = Mth.sin(Mth.PI * t);
++        float f10 = Mth.cos(Mth.PI * t) * 0.5f;
++
++        Vec3 normal = new Vec3(dx, dy, dz).normalize().cross(new Vec3(f9, f10, 0)).normalize();
++        float nx = (float)normal.x * thickness;
++        float ny = (float)normal.y * thickness;
++        float nz = (float)normal.z * thickness;
++
++        // 三角带的第一个顶点
++        vertexConsumer.vertex(matrix, x - nx, y - ny, z - nz)
++                .color(0.4f, 0.2f, 0.1f, 1.0f) // 棕色
++                .uv2(light)
++                .endVertex();
++
++        // 三角带的第二个顶点
++        vertexConsumer.vertex(matrix, x + nx, y + ny, z + nz)
++                .color(0.4f, 0.2f, 0.1f, 1.0f)
++                .uv2(light)
++                .endVertex();
++    }
++}
+\ No newline at end of file
