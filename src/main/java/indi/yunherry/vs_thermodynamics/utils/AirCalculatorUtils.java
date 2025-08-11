@@ -70,11 +70,13 @@ public class AirCalculatorUtils {
                     BurnerRenderer.liftPos = center;
                     burnerBlockData.liftCenter = center;
                     burnerBlockData.transformLiftCenter = VectorConversionsMCKt.toJOMLD(center).sub(ship.getInertiaData().getCenterOfMassInShip());
+
 //            System.out.println(VectorConversionsMCKt.toJOMLD(center).sub(ship.getInertiaData().getCenterOfMassInShip()));
                     //f_damped(ship.getTransform().getPositionInShip().y(),ship.getVelocity().y())
                 }
-
-                burnerBlockData.f.setRelease(f_damped(shipY, ship.getVelocity().y()));
+                Double f = f_damped(shipY, ship.getVelocity().y());
+                burnerBlockData.f.setRelease(f);
+                burnerBlockData.force.setRelease(10000 * burnerBlockData.getAirSize() * burnerBlockData.getValue() * burnerBlockData.f.getAcquire());
 //                log.warn("debug参数: {} {} {}", shipY, ship.getVelocity().y(), f_damped(shipY, ship.getVelocity().y()));
 //            log.info("产生升力: {}",ship.getInertiaData().getMass());
 

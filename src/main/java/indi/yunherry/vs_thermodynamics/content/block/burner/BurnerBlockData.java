@@ -16,7 +16,7 @@ public class BurnerBlockData {
     private float value;
     private float strength;
     private double shipY;
-
+    public AtomicReference<Double> force = new AtomicReference<>(0d);
     public boolean isRunning() {
         return isRunning;
     }

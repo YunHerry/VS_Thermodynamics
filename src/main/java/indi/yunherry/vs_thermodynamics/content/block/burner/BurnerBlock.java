@@ -67,7 +67,6 @@ public class BurnerBlock extends HorizontalAxisKineticBlock implements IBE<Burne
                     p_60498_.setSecondsOnFire(15);
                 }
             }
-            p_60498_.setSecondsOnFire(4);
         }
     }
 

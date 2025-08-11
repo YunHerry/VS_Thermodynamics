@@ -149,11 +149,11 @@ public class LinkerTool extends Item {
 //        System.out.println(sPos2);
         ropeConstraintData.setRopeLength(20.0);
         ropeConstraintData.setRopeConstraint(Pair.of(new ConnectionPointData(shipId1, new Vector3d(pos1.getX() + 0.5, pos1.getY() + 0.5, pos1.getZ() + 0.5)), new ConnectionPointData(shipId2, new Vector3d(pos2.getX() + 0.5, pos2.getY() + 0.5, pos2.getZ() + 0.5))));
-//        ClientRenderHooks.ropes.put(ropeConstraintData.getRopeConstraint(), 20.0);
+        ClientRenderHooks.ropeConstraints.put(ropeConstraintData.getRopeConstraint(), 20.0);
         System.out.println(sPos1.toString() + "       " + sPos2.toString());
         VSRopeConstraint vsRopeConstraint = new VSRopeConstraint(shipId1, shipId2, Float.MIN_VALUE, new Vector3d(pos1.getX() + 0.5, pos1.getY() + 0.5, pos1.getZ() + 0.5), new Vector3d(pos2.getX() + 0.5, pos2.getY() + 0.5, pos2.getZ() + 0.5), Float.MAX_VALUE, 20.0);
         core.createNewConstraint(vsRopeConstraint);
-        ClientRenderHooks.ropeConstraints.add(ropeConstraintData);
+//        ClientRenderHooks.ropeConstraints.add(ropeConstraintData);
         player.sendSystemMessage(Component.literal("铆桩已成功连接！"));
         resetTool(stack);
         return InteractionResult.SUCCESS;

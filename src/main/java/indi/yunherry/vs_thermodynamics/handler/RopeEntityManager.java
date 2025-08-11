@@ -31,7 +31,7 @@ public class RopeEntityManager {
         }
 
     }
-    public static RopeEntityManager loadOrCreate() {
-        MyWorldData.get(evt.getServer().overworld());
-    }
+//    public static RopeEntityManager loadOrCreate() {
+////        MyWorldData.get(evt.getServer().overworld());
+//    }
 }

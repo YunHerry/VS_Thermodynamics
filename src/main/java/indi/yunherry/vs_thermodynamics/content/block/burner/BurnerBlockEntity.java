@@ -87,7 +87,7 @@ public class BurnerBlockEntity extends KineticBlockEntity implements IHaveGoggle
         //如果存在燃料,同时阀门是开的
         //if(containsValidFuel && valveState != 0) {
 
-        if (true) {
+        if (containsValidFuel && valveState != 0) {
             heat = (valveState + 1) * multiplier;
             if (level.isClientSide) return;
             if (tick % 5 == 0) {

@@ -13,8 +13,7 @@ public class InitManagerHooks {
     //目前仅支持主世界
     @SubscribeEvent
     public static void onServerStart(ServerAboutToStartEvent evt) {
-        MyWorldData data = MyWorldData.get(evt.getServer().overworld());
-        // 可在此使用、缓存、统计等
+
     }
 
 }

@@ -48,7 +48,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class ClientRenderHooks {
     // --- CHANGE 1: Use the new Map data structure ---
 
-//    public static Map<Pair<ConnectionPointData, ConnectionPointData>, Double> ropes = new ConcurrentHashMap<>();
+    public static Map<Pair<ConnectionPointData, ConnectionPointData>, Double> ropeConstraints = new ConcurrentHashMap<>();
 
 //    @SubscribeEvent
     public static void onRenderLevel(RenderLevelStageEvent evt) {
@@ -68,14 +68,14 @@ public final class ClientRenderHooks {
         poseStack.pushPose();
         poseStack.translate(-camPos.x, -camPos.y, -camPos.z);
 
-        ropeConstraints.forEach(item -> {
-            Vector3d posA = getWorldCoordinates(item.getRopeConstraint().getLeft(), shipWorld,item.isShip1Static());
-            Vector3d posB = getWorldCoordinates(item.getRopeConstraint().getRight(), shipWorld,item.isShip2Static());
-//            System.out.println(posA.toString() + "       " + posB.toString());
-            if (posA != null && posB != null) {
-                renderLeash(poseStack, vertexConsumer, posA, posB, item.getRopeLength());
-            }
-        });
+//        ropeConstraints.forEach(item -> {
+//            Vector3d posA = getWorldCoordinates(item.getLeft(), shipWorld,item.getLeft().isShip1Static());
+//            Vector3d posB = getWorldCoordinates(item.getRight(), shipWorld,item.isShip2Static());
+////            System.out.println(posA.toString() + "       " + posB.toString());
+//            if (posA != null && posB != null) {
+//                renderLeash(poseStack, vertexConsumer, posA, posB, item.getRopeLength());
+//            }
+//        });
 
         poseStack.popPose();
         bufferSource.endBatch(CustomRenderTypes.ROPE_TRIANGLES);

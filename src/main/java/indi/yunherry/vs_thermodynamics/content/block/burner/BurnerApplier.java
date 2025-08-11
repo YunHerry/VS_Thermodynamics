@@ -27,7 +27,7 @@ public class BurnerApplier {
 
     public void applyForces(@NotNull PhysShip physShip) {
         if (burnerData.getAirSize() > 0 && burnerData.isRunning()) {
-            physShip.applyInvariantForceToPos(new Vector3d(0, 10000 * burnerData.getAirSize() * burnerData.getValue() * burnerData.f.getAcquire(), 0), burnerData.transformLiftCenter);
+            physShip.applyInvariantForceToPos(new Vector3d(0, burnerData.force.getAcquire(), 0), burnerData.transformLiftCenter);
         }
     }
 }
