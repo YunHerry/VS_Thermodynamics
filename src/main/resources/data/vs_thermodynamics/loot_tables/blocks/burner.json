@@ -1,0 +1,20 @@
+{
+ "type": "minecraft:block",
+ "pools": [
+   {
+     "name": "vs_thermodynamics:burner",
+     "rolls": 1,
+     "entries": [
+       {
+         "type": "minecraft:item",
+         "name": "vs_thermodynamics:burner"
+       }
+     ],
+     "conditions": [
+       {
+         "condition": "minecraft:survives_explosion"
+       }
+     ]
+   }
+ ]
+}
