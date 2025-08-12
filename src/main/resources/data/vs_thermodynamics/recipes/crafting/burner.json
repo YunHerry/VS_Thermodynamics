@@ -7,7 +7,7 @@
  ],
  "key": {
    "B": {
-     "item": "#forge:ingots/brass"
+     "item": "forge:ingots/brass"
    },
    "A": {
      "item": "create:andesite_alloy"
