@@ -1,0 +1,29 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+   " B ",
+   "ACS",
+   " E "
+ ],
+ "key": {
+   "B": {
+     "item": "#forge:ingots/brass"
+   },
+   "A": {
+     "item": "create:andesite_alloy"
+   },
+   "C": {
+     "item": "minecraft:compass"
+   },
+   "S": {
+     "item": "create:shaft"
+   },
+   "E": {
+     "item": "create:empty_blaze_burner"
+   }
+ },
+ "result": {
+   "item": "vs_thermodynamics:burner",
+   "count": 1
+ }
+}
