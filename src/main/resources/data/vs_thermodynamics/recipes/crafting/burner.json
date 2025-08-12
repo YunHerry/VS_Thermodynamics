@@ -7,19 +7,19 @@
  ],
  "key": {
    "B": {
-     "item": "forge:ingots/brass"
+     "tag": "forge:ingots/brass"
    },
    "A": {
-     "item": "create:andesite_alloy"
+     "tag": "create:andesite_alloy"
    },
    "C": {
-     "item": "minecraft:compass"
+     "tag": "minecraft:compass"
    },
    "S": {
-     "item": "create:shaft"
+     "tag": "create:shaft"
    },
    "E": {
-     "item": "create:empty_blaze_burner"
+     "tag": "create:empty_blaze_burner"
    }
  },
  "result": {
