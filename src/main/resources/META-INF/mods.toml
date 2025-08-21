@@ -47,7 +47,7 @@ modId = "forge" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory = true #mandatory
 # The version range of the dependency
-versionRange = "${forge_version_range}" #mandatory
+versionRange = "[47.2.32,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the dependency is not mandatory
 # BEFORE - This mod is loaded BEFORE the dependency
 # AFTER - This mod is loaded AFTER the dependency
@@ -62,19 +62,19 @@ versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
 [[dependencies."${mod_id}"]]
-modId="the_vmod"
+modId = "the_vmod"
 mandatory = false
 versionRange = "[1.2.0,)"
 ordering = "AFTER"
 side = "BOTH"
 [[dependencies."${mod_id}"]]
-modId="create"
+modId = "create"
 mandatory = false
 versionRange = "[0.5.1,)"
 ordering = "AFTER"
 side = "BOTH"
 [[dependencies."${mod_id}"]]
-modId="flywheel"
+modId = "flywheel"
 mandatory = false
 versionRange = "[0.6.11,)"
 ordering = "AFTER"

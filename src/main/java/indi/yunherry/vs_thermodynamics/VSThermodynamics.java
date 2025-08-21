@@ -19,6 +19,9 @@ public class VSThermodynamics {
     public static boolean DEBUG_MODE = false;
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
+    public VSThermodynamics() {
+        this(FMLJavaModLoadingContext.get());
+    }
     public VSThermodynamics(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
         modEventBus.addListener(this::commonSetup);
