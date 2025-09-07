@@ -10,20 +10,21 @@
      "tag": "forge:ingots/brass"
    },
    "A": {
-     "tag": "create:andesite_alloy"
+     "item": "create:andesite_alloy"
    },
    "C": {
-     "tag": "minecraft:compass"
+     "item": "minecraft:compass"
    },
    "S": {
-     "tag": "create:shaft"
+     "item": "create:shaft"
    },
    "E": {
-     "tag": "create:empty_blaze_burner"
+     "item": "create:empty_blaze_burner"
    }
  },
  "result": {
    "item": "vs_thermodynamics:burner",
    "count": 1
  }
+
 }
