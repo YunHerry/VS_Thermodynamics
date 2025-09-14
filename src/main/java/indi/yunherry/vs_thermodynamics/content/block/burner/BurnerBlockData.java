@@ -39,7 +39,7 @@ public class BurnerBlockData {
         this.transformLiftCenter = transformLiftCenter;
     }
 
-    public Vector3dc transformLiftCenter;
+    public Vector3dc transformLiftCenter = new Vector3d(0,0,0);
     public BurnerBlockData() {
     }
 
