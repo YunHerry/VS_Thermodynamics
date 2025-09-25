@@ -1,5 +1,5 @@
 {
-  "create.gui.goggles.vs_thermodynamics.value": "当前的转速百分比",
+  "create.gui.goggles.vs_thermodynamics.value": "当前的火力百分比",
   "itemGroup.vs_thermodynamics_creative_tab": "瓦尔基里：热力学",
 
   "block.vs_thermodynamics.burner": "燃气炉",
@@ -9,5 +9,7 @@
   "vs_thermodynamics.ponder.burner_usage.text_3": "燃气炉会填充上方的可以含水位置的体积,根据1w/1block来提供升力",
   "vs_thermodynamics.ponder.burner_usage.text_4": "根据虚拟热空气方块填充的位置会从热空气中心产生升力",
   "item.vs_thermodynamics.debug_stick": "调试棒",
-  "item.vs_thermodynamics.link_stick": "链接棒"
+  "item.vs_thermodynamics.link_stick": "链接棒",
+  "text.autoconfig.vs_thermodynamics.option.gift": "空气方块提供浮力",
+  "text.autoconfig.vs_thermodynamics.option.maxAirBlock": "燃烧器最大空气方块数量"
 }

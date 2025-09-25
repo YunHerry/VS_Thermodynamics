@@ -1,5 +1,7 @@
 package indi.yunherry.vs_thermodynamics.utils;
 
+import indi.yunherry.vs_thermodynamics.config.ConfigManager;
+import indi.yunherry.vs_thermodynamics.config.ThermodynamicsConfigData;
 import indi.yunherry.vs_thermodynamics.content.block.burner.BurnerBlockData;
 import indi.yunherry.vs_thermodynamics.content.block.burner.BurnerBlockEntity;
 import indi.yunherry.vs_thermodynamics.content.block.burner.BurnerRenderer;
@@ -62,7 +64,7 @@ public class AirCalculatorUtils {
                 Stream<BlockPos> stream = blockPosList.stream();
 
                 Map<Integer, List<BlockPos>> result = stream.collect(Collectors.groupingBy(BlockPos::getY));
-                Set<BlockPos> blockPos = AirCalculatorUtils.calculateNewHotAirVolume(result, new HashSet<>(), burnerPos, 600);
+                Set<BlockPos> blockPos = AirCalculatorUtils.calculateNewHotAirVolume(result, new HashSet<>(), burnerPos, ConfigManager.CONFIG.maxAirBlock);
                 burnerBlockData.setAirSize(blockPos.size());
 //                burnerBlockData.setShipY(burnerData.getAirSize() * GlobalContext.LIFT * calculatePriority(ship.getTransform().getPositionInShip().y()) * burnerData.getValue());
                 BlockPos center = AirCalculatorUtils.calculateCenterOfLift(blockPos);
@@ -76,7 +78,7 @@ public class AirCalculatorUtils {
                 }
                 Double f = f_damped(shipY, ship.getVelocity().y());
                 burnerBlockData.f.setRelease(f);
-                burnerBlockData.force.setRelease(10000 * burnerBlockData.getAirSize() * burnerBlockData.getValue() * burnerBlockData.f.getAcquire());
+                burnerBlockData.force.setRelease(ConfigManager.CONFIG.gift * burnerBlockData.getAirSize() * burnerBlockData.getValue() * burnerBlockData.f.getAcquire());
 //                log.warn("debug参数: {} {} {}", shipY, ship.getVelocity().y(), f_damped(shipY, ship.getVelocity().y()));
 //            log.info("产生升力: {}",ship.getInertiaData().getMass());
 

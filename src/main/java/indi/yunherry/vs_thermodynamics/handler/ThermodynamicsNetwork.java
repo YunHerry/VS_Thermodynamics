@@ -1,6 +1,7 @@
 package indi.yunherry.vs_thermodynamics.handler;
 
 import indi.yunherry.vs_thermodynamics.VSThermodynamics;
+import indi.yunherry.vs_thermodynamics.content.ConfigSyncPacket;
 import indi.yunherry.vs_thermodynamics.content.WindDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
@@ -26,6 +27,14 @@ public class ThermodynamicsNetwork {
                 WindDataPacket::decode,
                 WindDataPacket::handle
         );
+        CHANNEL.registerMessage(
+                packetId++,
+                ConfigSyncPacket.class,
+                ConfigSyncPacket::encode,
+                ConfigSyncPacket::decode,
+                ConfigSyncPacket::handle
+        );
+
         // 可以在这里继续注册更多 packet
     }
 }

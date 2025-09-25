@@ -4,5 +4,7 @@
 
   "block.vs_thermodynamics.burner": "Burner",
   "vs_thermodynamics.ponder.burner_usage.header": "Burner usage",
-  "vs_thermodynamics.ponder.burner_usage.text_1": "Burner usage"
+  "vs_thermodynamics.ponder.burner_usage.text_1": "Burner usage",
+  "text.autoconfig.vs_thermodynamics.option.gift": "gift for air block",
+  "text.autoconfig.vs_thermodynamics.option.maxAirBlock": "burner provider max air block"
 }

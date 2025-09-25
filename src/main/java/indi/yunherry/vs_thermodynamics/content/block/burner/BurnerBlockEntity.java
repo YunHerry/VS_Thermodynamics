@@ -7,6 +7,9 @@ import com.simibubi.create.foundation.fluid.SmartFluidTank;
 
 
 import com.simibubi.create.foundation.utility.Lang;
+import indi.yunherry.vs_thermodynamics.VSThermodynamics;
+import indi.yunherry.vs_thermodynamics.WorldContext;
+import indi.yunherry.vs_thermodynamics.config.ConfigManager;
 import indi.yunherry.vs_thermodynamics.utils.AirCalculatorUtils;
 import indi.yunherry.vs_thermodynamics.utils.ShipUtils;
 import net.minecraft.ChatFormatting;
@@ -213,17 +216,21 @@ public class BurnerBlockEntity extends KineticBlockEntity implements IHaveGoggle
         Lang.builder().add(Lang.translate("gui.goggles.vs_thermodynamics.value", new Object[0])).space().add(Lang.number(burnerData.getValue())).add(Lang.text("%")).style(ChatFormatting.RED).forGoggles(tooltip);
         //Efficiency
         double lift = burnerData.getShipY();
-        Lang.builder().add(Lang.text("当前高度: ")).add(Lang.number(lift)).add(Lang.text("")).style(ChatFormatting.GREEN).forGoggles(tooltip);
-        Lang.builder().add(Lang.text("热空气效率")).forGoggles(tooltip);
+        Lang.builder().add(Lang.text("当前高度: ")).add(Lang.number(lift)).add(Lang.text(" ")).style(ChatFormatting.GREEN).forGoggles(tooltip);
+        Lang.builder().add(Lang.text("热空气效率:")).style(ChatFormatting.GOLD).forGoggles(tooltip);
         //效率
         double efficient = burnerData.f.getAcquire();
 
         Lang.builder().add(Lang.text(makeObstructionBar(5,((int) (efficient*50 / 10))))).add(Lang.text(getEfficientLevel(efficient))).style(ChatFormatting.GREEN).forGoggles(tooltip);
         if (burnerData.getAirSize() != 0) {
-            Lang.builder().add(Lang.text("提供升力: ")).add(Lang.number(10000 * burnerData.getAirSize() * burnerData.getValue() * burnerData.f.getAcquire())).add(Lang.text("")).style(ChatFormatting.GREEN).forGoggles(tooltip);
+            Lang.builder().add(Lang.text("提供升力: ")).add(Lang.number(ConfigManager.CONFIG.gift * burnerData.getAirSize() * burnerData.getValue() * burnerData.f.getAcquire())).add(Lang.text("")).style(ChatFormatting.GREEN).forGoggles(tooltip);
             int hotAir = (int) burnerData.getAirSize();
 
             Lang.builder().add(Lang.text("Hot Air: ")).add(Lang.number(hotAir)).style(ChatFormatting.GOLD).forGoggles(tooltip);
+        }
+        if(VSThermodynamics.isDebugLevel()) {
+            Lang.builder().add(Lang.text("方块升力: ")).add(Lang.number(ConfigManager.CONFIG.gift)).add(Lang.text("")).style(ChatFormatting.GREEN).forGoggles(tooltip);
+
         }
         return true;
     }
@@ -243,13 +250,13 @@ public class BurnerBlockEntity extends KineticBlockEntity implements IHaveGoggle
     public static String getEfficientLevel(double efficient) {
         double level = ((int) (efficient*50 / 10));
         if(level>3.5) {
-          return String.format(" 高 (%d%)", (int)efficient*100);
+          return String.format(" 高 (%d%%)", (int)efficient*100);
         }
         if (level>2) {
-            return String.format(" 中 (%d%)", (int)efficient*100);
+            return String.format(" 中 (%d%%)", (int)efficient*100);
         }
         if (level>0) {
-            return String.format(" 低 (%d%)", (int)efficient*100);
+            return String.format(" 低 (%d%%)", (int)efficient*100);
         }
         return "计算空气效率错误";
     }
